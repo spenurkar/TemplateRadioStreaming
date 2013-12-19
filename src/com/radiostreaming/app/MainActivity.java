@@ -11,10 +11,12 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 public class MainActivity extends Activity implements OnClickListener{
 	
 	private Button btnStart, btnStop;
+	private ProgressBar progressBar;
 	private MediaPlayer player;
 
 	@Override
@@ -56,11 +58,16 @@ public class MainActivity extends Activity implements OnClickListener{
 	}
 
 	private void init() {
+		
+		progressBar = (ProgressBar) findViewById(R.id.progressBar);
+		
 		btnStart = (Button) findViewById(R.id.btnStart);
 		btnStop = (Button) findViewById(R.id.btnStop);
 		
 		btnStart.setOnClickListener(this);
 		btnStop.setOnClickListener(this);
+		
+		progressBar.setVisibility(View.GONE);
 	}
 
 	 @Override
@@ -90,6 +97,8 @@ public class MainActivity extends Activity implements OnClickListener{
 	private void startPlaying() {
         btnStop.setEnabled(true);
         btnStart.setEnabled(false);
+        
+        progressBar.setVisibility(View.VISIBLE);
 
         //playSeekBar.setVisibility(View.VISIBLE);
 
@@ -98,6 +107,9 @@ public class MainActivity extends Activity implements OnClickListener{
         player.setOnPreparedListener(new OnPreparedListener() {
 
             public void onPrepared(MediaPlayer mp) {
+            	
+            	progressBar.setVisibility(View.GONE);
+            	Log.v("TemplateRadioStreaming", "MainActivity.startPlaying().new OnPreparedListener() {...}: Start of radio");
                 player.start();
             }
         });
